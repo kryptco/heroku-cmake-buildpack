@@ -12,6 +12,7 @@ PROFILE_PATH="$BUILD_DIR/.profile.d/cmake.sh"
 
 mkdir -p $(dirname $PROFILE_PATH)
 mkdir -p $VENDOR_DIR
+mkdir -p "/app/vendor/"
 
 function set-default-env (){
   echo "export $1=\$$1:/app/vendor/$2" >> $PROFILE_PATH
