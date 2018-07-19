@@ -7,15 +7,18 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 
 VENDOR_DIR="$CACHE_DIR/vendor"
+LOCAL_VENDOR_DIR="/app/vendor"
 EXPORT_PATH="$PWD/export"
 PROFILE_PATH="$BUILD_DIR/.profile.d/cmake.sh"
 
 mkdir -p $(dirname $PROFILE_PATH)
 mkdir -p $VENDOR_DIR
+mkdir -p $LOCAL_VENDOR_DIR
+
 
 function set-default-env (){
-  echo "export $1=\$$1:$VENDOR_DIR/$2" >> $PROFILE_PATH
-  echo "export $1=\$$1:$VENDOR_DIR/$2" >> $EXPORT_PATH
+  echo "export $1=\$$1:$LOCAL_VENDOR_DIR/$2" >> $PROFILE_PATH
+  echo "export $1=\$$1:$LOCAL_VENDOR_DIR/$2" >> $EXPORT_PATH
 }
 
 if [ ! -f "$VENDOR_DIR/cmake/bin/cmake" ]; then
@@ -26,8 +29,10 @@ if [ ! -f "$VENDOR_DIR/cmake/bin/cmake" ]; then
   cd "$VENDOR_DIR/cmake"
   ./configure --prefix=$VENDOR_DIR
   make
-  make install
+  make install  
 fi
+
+cp -R "$VENDOR_DIR/cmake" "$LOCAL_VENDOR_DIR/cmake"
 
 set-default-env PATH "cmake/bin"
 set-default-env LD_LIBRARY_PATH "cmake/lib"
