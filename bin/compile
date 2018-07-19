@@ -32,6 +32,7 @@ if [ ! -f "$VENDOR_DIR/cmake/bin/cmake" ]; then
   make install  
 fi
 
+echo "-----> Copying vendored cmake"
 cp -R "$VENDOR_DIR/cmake" "$LOCAL_VENDOR_DIR/cmake"
 
 set-default-env PATH "cmake/bin"
